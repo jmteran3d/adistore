@@ -1,0 +1,24 @@
+[
+  {
+    "id": 1,
+    "title": "Kite Nexus 4",
+    "description": "Wave + Freeride / Freestyle",
+    "code": "KN123",
+    "price": "$1.739.000 CLP",
+    "status": true,
+    "stock": 10,
+    "category": "Kites",
+    "thumbnails": "./public/images/whitekite.jpg"
+  },
+  {
+    "id": 2,
+    "title": "Kite XR 8",
+    "description": "Performance Freeride",
+    "code": "KN123",
+    "price": "$1.699.000 CLP",
+    "status": true,
+    "stock": 20,
+    "category": "Kites",
+    "thumbnails": "./public/images/blackkite.jpg"
+  }
+]
