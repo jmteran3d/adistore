@@ -14,11 +14,22 @@
     "id": 2,
     "title": "Kite XR 8",
     "description": "Performance Freeride",
-    "code": "KN123",
-    "price": "$1.699.000 CLP",
+    "code": "KX456",
+    "price": "$1.899.000 CLP",
     "status": true,
     "stock": 20,
     "category": "Kites",
     "thumbnails": "./public/images/blackkite.jpg"
+  },
+  {
+    "id": 3,
+    "title": "Kite North Reach",
+    "description": "Performance Freeride 2025",
+    "code": "KN789",
+    "price": "$1.369.000 CLP",
+    "status": true,
+    "stock": 15,
+    "category": "Kites",
+    "thumbnails": "./public/images/bluekite.jpg"
   }
 ]
