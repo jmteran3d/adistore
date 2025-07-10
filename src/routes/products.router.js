@@ -1,5 +1,6 @@
 import { Router } from "express";
 import ProductManager from "../managers/ProductManager.js";
+import uploader from "../utils/uploader.js";
 
 const router = Router();
 const productManager = new ProductManager("./src/data/products.json");
@@ -22,13 +23,16 @@ router.get("/:pid", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", uploader.single("file"), async (req, res) => {
   try {
-    const newProduct = req.body;
-    const created = await productManager.addProduct(newProduct);
-    res.status(201).json({ status: "success", products: created });
+    const title = req.body.title;
+    const price = req.body.price;
+    const thumbnail = "/images/" + req.file.filename;
+    
+    await productManager.addProduct({title, price, thumbnail});
+    res.redirect("/");
   } catch (error) {
-    res.status(500).json({ status: "error", message: error.message });
+    res.status(500).json({ status: "error", message: "No se pudo agregar el producto" });
   }
 });
 

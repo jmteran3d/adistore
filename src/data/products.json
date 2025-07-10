@@ -31,5 +31,11 @@
     "stock": 15,
     "category": "Kites",
     "thumbnails": "./public/images/bluekite.jpg"
+  },
+  {
+    "id": 4,
+    "title": "Prueba",
+    "price": "18000",
+    "thumbnail": "/images/1752120109669-IMG_0395.JPG"
   }
 ]
