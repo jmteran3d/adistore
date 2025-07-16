@@ -1,0 +1,68 @@
+<div class="dashboard">
+  <h1 class="dashboard-title">Productos en Tiempo Real</h1>
+
+  <form id="productForm" class="product-form">
+    <input class="form-input" type="text" name="title" placeholder="Nombre del producto" required>
+    <input class="form-input" type="text" name="price" placeholder="Precio del producto" required>
+    <input class="form-input" type="text" name="thumbnail" placeholder="URL de la imagen" required>
+    <button type="submit" class="form-button">Agregar Producto</button>
+  </form>
+
+  <h2>Total de productos: <span id="product-count">{{products.length}}</span></h2>
+  <div id="productList" class="product-grid">
+    {{#each products}}
+      <div class="product-card" data-id="{{this.id}}">
+        <div class="product-image-container">
+          <img class="product-image" src="{{this.thumbnail}}" alt="imagen">
+        </div>
+        <h3 class="product-title">{{this.title}}</h3>
+        <p class="product-price">{{this.price}}</p>
+        <button class="form-button delete-button" data-id="{{this.id}}">Eliminar</button>
+      </div>
+    {{/each}}
+  </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+
+  const productList = document.getElementById("productList");
+  const productCount = document.getElementById("product-count");
+  const form = document.getElementById("productForm");
+
+  // Escuchar productos actualizados
+  socket.on("productosActualizados", (productos) => {
+    productList.innerHTML = "";
+    productos.forEach((p) => {
+      productList.innerHTML += `
+        <div class="product-card" data-id="${p.id}">
+          <div class="product-image-container">
+            <img class="product-image" src="${p.thumbnail}" alt="imagen">
+          </div>
+          <h3 class="product-title">${p.title}</h3>
+          <p class="product-price">${p.price}</p>
+          <button class="form-button delete-button" data-id="${p.id}">Eliminar</button>
+        </div>
+      `;
+    });
+    productCount.textContent = productos.length;
+  });
+
+  // Enviar producto al servidor
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+    const product = Object.fromEntries(formData.entries());
+    socket.emit("nuevoProducto", product);
+    form.reset();
+  });
+
+  // Eliminar producto
+  productList.addEventListener("click", (e) => {
+    if (e.target.classList.contains("delete-button")) {
+      const id = e.target.dataset.id;
+      socket.emit("eliminarProducto", id);
+    }
+  });
+</script>

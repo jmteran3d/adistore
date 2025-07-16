@@ -1,5 +1,5 @@
 <div class="dashboard">
-  <h1 class="dashboard-title">Home</h1>
+  <h1 class="dashboard-title">Equipos de Kitesurf</h1>
 
   {{#with user}}
     <div class="user-info">
@@ -38,11 +38,14 @@
   </div>
 
   <div class="product-grid">
-    {{!-- <h2>Total de productos: {{products.length}}</h2> --}}
     {{#each products}}
       <div class="product-card">
         <div class="product-image-container">
-          <img class="product-image" src={{this.thumbnail}} alt="Imagen de {{this.title}}" />
+          <img
+            class="product-image"
+            src={{this.thumbnail}}
+            alt="Imagen de {{this.title}}"
+          />
         </div>
         <h2 class="product-title">{{this.title}}</h2>
         <h3 class="product-price">Precio: {{this.price}}</h3>
@@ -102,19 +105,37 @@
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
-  //iniciamos la conexion a websockets desde el cliente const socket = io();
-  //capturamos el historial de mensajes socket.on("message history", (messages)
-  => { const chatBox = document.getElementById("chatBox");
-  messages.forEach((dataMessage)=> { chatBox.innerHTML +=
-  `<p>${dataMessage.username} - ${dataMessage.message}</p>`; }); });
-  //formulario const formChat = document.getElementById("formChat"); const
-  inputChat = document.getElementById("inputChat"); const inputUsername =
-  document.getElementById("inputUsername"); formChat.addEventListener("submit",
-  (event) => { event.preventDefault(); const message = inputChat.value; const
-  username = inputUsername.value; inputChat.value = ""; //emitimos un nuevo
-  evento desde el cliente al servidor socket.emit("new message", { message,
-  username }); }); //capturamos los mensajes nuevos socket.on("broadcast new
-  message", (data)=> { //insertar el nuevo mensaje en el html const chatBox =
-  document.getElementById("chatBox"); chatBox.innerHTML += `<p> ${data.username}
-  - ${data.message} </p>` })
+  //iniciamos la conexion a websockets desde el cliente
+  const socket = io();
+
+  //capturamos el historial de mensajes
+  socket.on("message history", (messages) => {
+    const chatBox = document.getElementById("chatBox");
+    messages.forEach((dataMessage)=> {
+      chatBox.innerHTML += `<p>${dataMessage.username} - ${dataMessage.message}</p>`;
+    });
+  });
+
+  //formulario
+  const formChat = document.getElementById("formChat");
+  const inputChat = document.getElementById("inputChat");
+  const inputUsername = document.getElementById("inputUsername");
+
+  formChat.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const message = inputChat.value;
+    const username = inputUsername.value;
+    inputChat.value = "";
+
+    //emitimos un nuevo evento desde el cliente al servidor
+    socket.emit("new message", { message, username });
+  });
+
+  //capturamos los mensajes nuevos
+  socket.on("broadcast new message", (data)=> {
+    //insertar el nuevo mensaje en el html
+    const chatBox = document.getElementById("chatBox");
+    chatBox.innerHTML += `<p> ${data.username} - ${data.message} </p>`
+  })
 </script>

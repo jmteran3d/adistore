@@ -35,4 +35,9 @@ router.get("/contact", middlewareIsAdmin, (req, res)=> {
   res.render("contact");
 });
 
+router.get("/realtimeproducts", async (req, res) => {
+  const products = await productManager.getProducts();
+  res.render("realTimeProducts", { products });
+});
+
 export default router;

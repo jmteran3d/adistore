@@ -1,13 +1,16 @@
 # 🛍️ AdiStore API
 
-Proyecto de servidor RESTful desarrollado con **Node.js** y **Express**, para la gestión de productos y carritos de compra. Forma parte de la Primera Entrega del curso de Backend de Coderhouse.
+Proyecto de servidor RESTful desarrollado con **Node.js** y **Express.js**, para la gestión de productos y carritos de compra. Forma parte de la Segunda Entrega del curso de Backend I de Coderhouse.
 
 ## 📦 Tecnologías utilizadas
 
 - Node.js
-- Express
+- Express.js
+- Express Handlebars
+- Socket.io
+- Multer (para carga de archivos)
 - File System (`fs`) para persistencia de datos
-- JavaScript ESModules (`type: module`)
+- JavaScript (Frontend)
 - Nodemon (modo desarrollo)
 
 ## 🚀 Cómo ejecutar el proyecto
@@ -51,9 +54,33 @@ Los productos se almacenan en products.json. El campo id se genera automáticame
 
 Los carritos se almacenan en carts.json con un array de productos { product, quantity }.
 
+## 🧩 Funcionalidades Implementadas
+
+### ✅ Handlebars Configurado
+- Motor de plantillas configurado correctamente.
+- Vista principal `/` muestra todos los productos actuales desde `products.json`.
+
+### ✅ Vista en Tiempo Real `/realtimeproducts`
+- Muestra productos en vivo.
+- Permite **agregar** productos usando WebSockets.
+- Permite **eliminar** productos desde la misma vista.
+- Sin recargar la página, el DOM se actualiza automáticamente.
+
+### ✅ WebSocket Configurado
+- Emite evento `nuevoProducto` y `eliminarProducto` desde el cliente.
+- El servidor responde con `productosActualizados` y actualiza la vista.
+
+### ✅ Carga de archivos con Multer
+- Envío de imágenes desde formulario HTML (`products.router.js`).
+
+### ✅ Chat WebSocket (adicional)
+- Sección de mensajes simulando un chat simple.
+- Usa eventos WebSocket para compartir mensajes entre clientes conectados.
+
 ✅ Estado del Proyecto
 
 ✔ Primera entrega completa.
+✔ Segunda entrega completa.
 
 🚧 Validación de campos y manejo avanzado de errores será implementado en entregas futuras.
 
@@ -61,7 +88,7 @@ Los carritos se almacenan en carts.json con un array de productos { product, qua
 
 Jesús Terán Dávila
 
-LinkedIn | GitHub
+¿Dudas o sugerencias? ¡Estoy en LinkedIn! 👉 [linkedin.com/in/jmteran3d](https://www.linkedin.com/in/jmteran3d)
 
 📝 Licencia
 Este proyecto se encuentra bajo la licencia ISC.
