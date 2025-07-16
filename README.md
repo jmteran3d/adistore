@@ -1,3 +1,8 @@
+![Coderhouse - Backend I Course](https://img.shields.io/badge/Coderhouse-Backend-blueviolet?style=for-the-badge&logo=OpenAI&logoColor=white)
+
+# 🛍️ AdiStore - Segunda Pre Entrega
+
+
 # 🛍️ AdiStore API
 
 Proyecto de servidor RESTful desarrollado con **Node.js** y **Express.js**, para la gestión de productos y carritos de compra. Forma parte de la Segunda Entrega del curso de Backend I de Coderhouse.
