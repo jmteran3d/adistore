@@ -16,7 +16,7 @@ body{
 }
 
 .user-info {
-  background-color: #08141a;
+  background-color: grey;
   padding: 1rem;
   margin-bottom: 2rem;
   border-radius: 8px;
@@ -52,7 +52,7 @@ body{
 .product-card {
   width: 400px;
   margin: 20px 0;
-  background-color: #08161e;
+  background-color: grey;
   border: 1px solid #02526b;
   border-radius: 10px;
   padding: 1rem;
@@ -80,7 +80,7 @@ body{
 }
 
 .product-price {
-  color: #666;
+  color: white;
   font-size: 1rem;
 }
 
@@ -110,7 +110,7 @@ body{
   border: 1px solid #157b92;
   background-color: rgb(210, 210, 210);
   border-radius: 8px;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, background-color 0.2s;;
 }
 
 .form-input:focus {

@@ -8,7 +8,7 @@
     "status": true,
     "stock": 10,
     "category": "Kites",
-    "thumbnails": "./public/images/whitekite.jpg"
+    "thumbnail": "/images/whitekite.jpg"
   },
   {
     "id": 2,
@@ -19,7 +19,7 @@
     "status": true,
     "stock": 20,
     "category": "Kites",
-    "thumbnails": "./public/images/blackkite.jpg"
+    "thumbnail": "/images/blackkite.jpg"
   },
   {
     "id": 3,
@@ -30,12 +30,12 @@
     "status": true,
     "stock": 15,
     "category": "Kites",
-    "thumbnails": "./public/images/bluekite.jpg"
+    "thumbnail": "/images/bluekite.jpg"
   },
   {
     "id": 4,
-    "title": "Prueba",
-    "price": "18000",
-    "thumbnail": "/images/1752120109669-IMG_0395.JPG"
+    "title": "Kite North Orbit",
+    "price": "1197000",
+    "thumbnail": "/images/1752691897871-yellowkite.jpg"
   }
 ]

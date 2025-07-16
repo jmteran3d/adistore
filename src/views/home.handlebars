@@ -5,27 +5,44 @@
     <div class="user-info">
       <h2 class="username">{{username}}</h2>
       {{#if isAdmin}}
-        <h3 class="admin-message admin-true">Permisos de administrador</h3>
+        <h3 class="admin-message admin-true">Permisos de Administrador</h3>
       {{else}}
-        <h3 class="admin-message admin-false">No tienes permisos de administrador</h3>
+        <h3 class="admin-message admin-false">No tienes permisos de
+          administrador</h3>
       {{/if}}
     </div>
   {{/with}}
 
-  <div>
-    <form action="http://localhost:8080/api/products" method="post" enctype="multipart/form-data">
-      <input type="text" name="title" placeholder="Nombre del producto">
-      <input type="number" name="price" placeholder="Precio del producto">
-      <input type="file" name="file">
-      <button type="submit">Agregar Producto</button>
+  <div class="form-container">
+    <form
+      class="product-form"
+      action="http://localhost:8080/api/products"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <input
+        type="text"
+        name="title"
+        class="form-input"
+        placeholder="Nombre del producto"
+      />
+      <input
+        type="number"
+        name="price"
+        class="form-input"
+        placeholder="Precio del producto"
+      />
+      <input type="file" name="file" class="form-input" />
+      <button type="submit" class="form-button">Agregar Producto</button>
     </form>
   </div>
 
   <div class="product-grid">
+    {{!-- <h2>Total de productos: {{products.length}}</h2> --}}
     {{#each products}}
       <div class="product-card">
         <div class="product-image-container">
-          <img class="product-image" src={{this.thumbnail}} alt="">
+          <img class="product-image" src={{this.thumbnail}} alt="Imagen de {{this.title}}" />
         </div>
         <h2 class="product-title">{{this.title}}</h2>
         <h3 class="product-price">Precio: {{this.price}}</h3>
@@ -33,3 +50,71 @@
     {{/each}}
   </div>
 </div>
+
+<div
+  class="container-fluid d-flex justify-content-center align-items-center min-vh-100 my-1"
+>
+  <div
+    class="card shadow-lg p-4 rounded w-100 d-flex flex-column"
+    style="max-width: 400px; height: 95vh;"
+  >
+
+    <!-- Logo -->
+    <img
+      class="w-50 align-self-center"
+      src="https://thumbs.dreamstime.com/b/msn-messenger-logo-129294088.jpg"
+      alt="logo msn"
+    />
+
+    <!-- Form con inputs -->
+    <form id="formChat" class="mt-3 d-flex flex-column">
+      <!-- Nombre de usuario -->
+      <input
+        type="text"
+        id="inputUsername"
+        class="form-control mb-2"
+        placeholder="Nombre de usuario"
+        required
+      />
+
+      <!-- Mensaje + botón -->
+      <div class="input-group">
+        <input
+          type="text"
+          id="inputChat"
+          class="form-control"
+          placeholder="Ingrese su mensaje..."
+          required
+        />
+        <button type="submit" class="btn btn-primary">Enviar</button>
+      </div>
+    </form>
+
+    <!-- Chatbox ocupa todo el espacio restante y queda abajo -->
+    <div
+      id="chatBox"
+      class="mt-3 border rounded p-2 overflow-auto bg-light d-flex flex-column flex-grow-1"
+    >
+    </div>
+
+  </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  //iniciamos la conexion a websockets desde el cliente const socket = io();
+  //capturamos el historial de mensajes socket.on("message history", (messages)
+  => { const chatBox = document.getElementById("chatBox");
+  messages.forEach((dataMessage)=> { chatBox.innerHTML +=
+  `<p>${dataMessage.username} - ${dataMessage.message}</p>`; }); });
+  //formulario const formChat = document.getElementById("formChat"); const
+  inputChat = document.getElementById("inputChat"); const inputUsername =
+  document.getElementById("inputUsername"); formChat.addEventListener("submit",
+  (event) => { event.preventDefault(); const message = inputChat.value; const
+  username = inputUsername.value; inputChat.value = ""; //emitimos un nuevo
+  evento desde el cliente al servidor socket.emit("new message", { message,
+  username }); }); //capturamos los mensajes nuevos socket.on("broadcast new
+  message", (data)=> { //insertar el nuevo mensaje en el html const chatBox =
+  document.getElementById("chatBox"); chatBox.innerHTML += `<p> ${data.username}
+  - ${data.message} </p>` })
+</script>
