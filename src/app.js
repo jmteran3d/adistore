@@ -6,10 +6,16 @@ import viewsRouter from "./routes/views.router.js";
 import productsRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/carts.router.js";
 import ProductManager from "./managers/ProductManager.js";
+import connectMongoDB from "./config/db.js";
+import dotenv from "dotenv";
 
+dotenv.config();
 
 const app = express();
+app.use(express.json());
 const server = http.createServer(app);
+
+connectMongoDB();
 
 //configuramos nuestro server para que acepte solicitudes websockets
 // Input - Output
