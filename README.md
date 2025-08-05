@@ -1,22 +1,31 @@
 ![Coderhouse - Backend I Course](https://img.shields.io/badge/Coderhouse-Backend-blueviolet?style=for-the-badge&logo=OpenAI&logoColor=white)
 
-# 🛍️ AdiStore - Segunda Pre Entrega
+# 🛍️ AdiStore - Entrega Final Backend I
 
 
 # 🛍️ AdiStore API
 
-Proyecto de servidor RESTful desarrollado con **Node.js** y **Express.js**, para la gestión de productos y carritos de compra. Forma parte de la Segunda Entrega del curso de Backend I de Coderhouse.
+Servidor RESTful y en tiempo real para gestión de productos y carritos de compra, desarrollado con Node.js, Express.js, MongoDB, Mongoose, Socket.io y Handlebars. Proyecto final del curso Backend I de Coderhouse.
 
 ## 📦 Tecnologías utilizadas
 
-- Node.js
-- Express.js
-- Express Handlebars
-- Socket.io
-- Multer (para carga de archivos)
-- File System (`fs`) para persistencia de datos
-- JavaScript (Frontend)
-- Nodemon (modo desarrollo)
+Node.js
+
+Express.js
+
+MongoDB + Mongoose
+
+Express Handlebars
+
+Socket.io (WebSockets para productos en tiempo real y chat)
+
+Multer (para carga de imágenes)
+
+JavaScript (Frontend y Backend)
+
+Nodemon (modo desarrollo)
+
+Dotenv (variables de entorno)
 
 ## 🚀 Cómo ejecutar el proyecto
 
@@ -28,66 +37,74 @@ git clone
 
 npm install
 
+Crear archivo .env con:
+
+PORT=8080
+URI_MONGODB=mongodb+srv://coderjm:coderpass@ecommerce-cluster.pssjokm.mongodb.net/myEcommerce?retryWrites=true&w=majority&appName=ecommerce-cluster
+
 ### 3. Ejecutar en modo desarrollo
 
-npm run dev
+npm start
 
 El servidor se ejecuta en: http://localhost:8080
 
 ### 4. 📁 Estructura del Proyecto
 
-📌 Endpoints disponibles
-🛒 /api/products
-| Método | Ruta                 | Descripción                           |
-| ------ | -------------------- | ------------------------------------- |
-| GET    | `/api/products`      | Lista todos los productos             |
-| GET    | `/api/products/:pid` | Obtiene un producto por su ID         |
-| POST   | `/api/products`      | Crea un nuevo producto                |
-| PUT    | `/api/products/:pid` | Actualiza un producto (excepto su ID) |
-| DELETE | `/api/products/:pid` | Elimina un producto por ID            |
-
-Los productos se almacenan en products.json. El campo id se genera automáticamente.
-
-🧺 /api/carts
-| Método | Ruta                           | Descripción                                   |
-| ------ | ------------------------------ | --------------------------------------------- |
-| POST   | `/api/carts`                   | Crea un nuevo carrito vacío                   |
-| GET    | `/api/carts`                   | Lista todos los carritos (opcional)           |
-| GET    | `/api/carts/:cid`              | Muestra productos de un carrito por ID        |
-| POST   | `/api/carts/:cid/product/:pid` | Agrega un producto al carrito (suma cantidad) |
+📁 Estructura del Proyecto y Endpoints Principales
+Productos /api/products
+| Método | Ruta                 | Descripción                                                                         |
+| ------ | -------------------- | ----------------------------------------------------------------------------------- |
+| GET    | `/api/products`      | Listar productos con paginación, filtros y ordenamientos (limit, page, query, sort) |
+| GET    | `/api/products/:pid` | Obtener detalle de producto por ID                                                  |
+| POST   | `/api/products`      | Crear un nuevo producto                                                             |
+| PUT    | `/api/products/:pid` | Actualizar un producto (excepto ID)                                                 |
+| DELETE | `/api/products/:pid` | Eliminar un producto por ID                                                         |
 
 
-Los carritos se almacenan en carts.json con un array de productos { product, quantity }.
+Carritos /api/carts
+| Método | Ruta                            | Descripción                                              |
+| ------ | ------------------------------- | -------------------------------------------------------- |
+| POST   | `/api/carts`                    | Crear un carrito vacío                                   |
+| GET    | `/api/carts`                    | Listar todos los carritos                                |
+| GET    | `/api/carts/:cid`               | Obtener productos populados de un carrito por ID         |
+| POST   | `/api/carts/:cid/product/:pid`  | Agregar un producto al carrito (suma cantidad si existe) |
+| PUT    | `/api/carts/:cid`               | Reemplazar todos los productos del carrito               |
+| PUT    | `/api/carts/:cid/products/:pid` | Actualizar solo la cantidad de un producto en el carrito |
+| DELETE | `/api/carts/:cid/products/:pid` | Eliminar un producto específico del carrito              |
+| DELETE | `/api/carts/:cid`               | Vaciar todos los productos del carrito                   |
 
-## 🧩 Funcionalidades Implementadas
+🧩 Funcionalidades Destacadas
+✅ Persistencia en MongoDB
+Modelos Product y Cart con esquemas robustos y referencias (populate en productos de carrito).
 
-### ✅ Handlebars Configurado
-- Motor de plantillas configurado correctamente.
-- Vista principal `/` muestra todos los productos actuales desde `products.json`.
+Paginación, filtros (query por categoría o disponibilidad) y ordenamientos (sort asc/desc por precio) en productos.
 
-### ✅ Vista en Tiempo Real `/realtimeproducts`
-- Muestra productos en vivo.
-- Permite **agregar** productos usando WebSockets.
-- Permite **eliminar** productos desde la misma vista.
-- Sin recargar la página, el DOM se actualiza automáticamente.
+✅ WebSockets en Tiempo Real
+Vista /realtimeproducts para agregar/eliminar productos sin recargar.
 
-### ✅ WebSocket Configurado
-- Emite evento `nuevoProducto` y `eliminarProducto` desde el cliente.
-- El servidor responde con `productosActualizados` y actualiza la vista.
+Sincronización instantánea entre todos los clientes conectados.
 
-### ✅ Carga de archivos con Multer
-- Envío de imágenes desde formulario HTML (`products.router.js`).
+Chat en tiempo real con almacenamiento en memoria para demo.
 
-### ✅ Chat WebSocket (adicional)
-- Sección de mensajes simulando un chat simple.
-- Usa eventos WebSocket para compartir mensajes entre clientes conectados.
+✅ Vistas con Handlebars
+Página principal / con lista paginada y botón “Agregar al carrito”.
 
-✅ Estado del Proyecto
+Detalle de producto /products/:pid con botón para agregar al carrito.
 
-✔ Primera entrega completa.
-✔ Segunda entrega completa.
+Vista de carrito /carts/:cid mostrando productos y cantidades con subtotales.
 
-🚧 Validación de campos y manejo avanzado de errores será implementado en entregas futuras.
+✅ Carga de imágenes con Multer
+Manejo de archivos para imágenes de productos.
+
+✅ Validaciones básicas y manejo de errores
+Respuestas claras con estados success o error y mensajes descriptivos.
+
+🖥️ Rutas Web y Vistas Principales
+Ruta	Descripción
+/	Vista con listado paginado productos
+/products/:pid	Detalle de producto
+/carts/:cid	Vista del carrito con productos
+/realtimeproducts	Productos en tiempo real (WebSockets)
 
 👨‍💻 Autor
 
