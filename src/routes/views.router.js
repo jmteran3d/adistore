@@ -1,43 +1,36 @@
 import { Router } from "express";
-import ProductManager from "../managers/ProductManager.js";
+import Product from "../models/product.model.js";
 
 const router = Router();
-const productManager = new ProductManager("./src/data/products.json");
-
-const user = { username: "JMTeran3D_Dev", isAdmin: true };
-
-const middlewareIsAdmin = (req, res, next) => {
-  if(user.isAdmin){
-    next();
-  }else{
-    res.redirect("/error");
-  }
-}
 
 router.get("/", async(req, res)=> {
-  try {
-    const products = await productManager.getProducts();
+  try{
+    const { limit = 10, page = 1 } = req.query;
+    const data = await Product.paginate({ }, { limit, page, lean: true });
+    const products = data.docs;
+    delete data.docs;
 
-    // Validación
-    if (!Array.isArray(products) || products.length === 0) {
-      console.error("❌ 'products' no es un array válido o está vacío");
-      return res.render("home", { products: [], user });
-    }
+    const links = [];
 
-    res.render("home", { products, user });
-  } catch (error) {
-    console.error("Error al cargar productos:", error);
-    res.render("error");
+    for(let index = 1; index <= data.totalPages; index++ ){
+      links.push({ text: index, link: `?limit=${limit}&page=${index}` });
+    };
+
+    res.render("home", { products, links });
+  }catch(error){
+    res.status(500).send({ message: error.message });
   }
 });
 
-router.get("/contact", middlewareIsAdmin, (req, res)=> {
-  res.render("contact");
-});
 
-router.get("/realtimeproducts", async (req, res) => {
-  const products = await productManager.getProducts();
-  res.render("realTimeProducts", { products });
-});
+/* router.get("/realtimeproducts", async (req, res) => {
+  try {
+    const products = await productManager.getProducts();
+    res.render("realTimeProducts", { products });
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+  
+}); */
 
 export default router;

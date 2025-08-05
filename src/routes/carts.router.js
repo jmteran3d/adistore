@@ -1,12 +1,19 @@
 import { Router } from "express";
-import CartManager from "../managers/CartManager.js";
+/* import CartManager from "../managers/CartManager.js"; */
+import Cart from "../models/cart.model.js";
 
 const router = Router();
-const cartManager = new CartManager("./src/data/carts.json");
+/* const cartManager = new CartManager("./src/data/carts.json"); */
 
 router.post("/", async (req, res) => {
-  const cart = await cartManager.createCart();
-  res.status(201).json({ status: "success", cart });
+  try {
+    const cart = new Cart();
+    await cart.save();
+
+    res.status(201).json({ status: "success", payload: cart });
+  } catch (error) {
+    res.status(500).json({ status: "error", message: "Error al crear el carrito" });
+  }
 });
 
 router.get("/", async (req, res) => {
@@ -18,21 +25,28 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:cid", async (req, res) => {
+router.get("/:cid", async(req, res)=> {
   try {
-    const cart = await cartManager.getCartById(req.params.cid);
-    res.status(200).json({ status: "success", cart });
+    const cid = req.params.cid;
+    const cart = await Cart.findById(cid).populate("products.product");
+    if(!cart) return res.status(404).json({ status: "error", message: "Carrito no encontrado" });
+
+    res.status(200).json({ status: "success", payload: cart.products });
   } catch (error) {
-    res.status(404).json({ status: "error", message: error.message });
+    res.status(500).json({ status: "error", message: "Error al traer los productos del carrito" });
   }
 });
 
-router.post("/:cid/product/:pid", async (req, res) => {
+router.post("/:cid/product/:pid", async(req, res)=> {
   try {
-    const updatedCart = await cartManager.addProductToCart(req.params.cid, req.params.pid);
-    res.status(200).json({ status: "success", cart: updatedCart });
+    const { cid, pid } = req.params;
+    const { quantity } = req.body;
+
+    const updatedCart = await Cart.findByIdAndUpdate(cid, { $push : { products: { product: pid, quantity } } }, { new: true });
+
+    res.status(200).json({ status: "success", payload: updatedCart });
   } catch (error) {
-    res.status(400).json({ status: "error", message: error.message });
+    res.status(500).json({ status: "error", message: "Error al insertar el producto en el carrito" });
   }
 });
 
