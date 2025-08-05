@@ -1,0 +1,68 @@
+<div class="container mt-5">
+  <div class="card shadow-lg p-4 rounded">
+    <div class="row g-4">
+      <!-- Imagen del producto -->
+      <div class="col-md-5">
+        <img 
+          src="{{product.thumbnail}}" 
+          alt="{{product.title}}" 
+          class="img-fluid rounded">
+      </div>
+
+      <!-- Detalles del producto -->
+      <div class="col-md-7">
+        <h1>{{product.title}}</h1>
+        <p class="text-muted">{{product.category}}</p>
+        <p>{{product.description}}</p>
+        <h3 class="text-success">$ {{product.price}}</h3>
+        <p><strong>Stock:</strong> {{product.stock}}</p>
+
+        <!-- Botón para agregar al carrito -->
+        <button 
+          class="btn btn-primary btn-lg mt-3" 
+          id="addToCartBtn" 
+          data-id="{{product._id}}">
+          Agregar al carrito
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    let cartId = localStorage.getItem("cartId");
+
+    async function createCartIfNeeded() {
+      if (!cartId) {
+        const res = await fetch("/api/carts", { method: "POST" });
+        const data = await res.json();
+        cartId = data.payload._id;
+        localStorage.setItem("cartId", cartId);
+      }
+    }
+
+    async function addToCart(productId) {
+      await createCartIfNeeded();
+
+      const res = await fetch(`/api/carts/${cartId}/product/${productId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ quantity: 1 })
+      });
+
+      if (res.ok) {
+        alert("Producto agregado al carrito");
+      } else {
+        alert("Error al agregar producto al carrito");
+      }
+    }
+
+    document.getElementById("addToCartBtn").addEventListener("click", () => {
+      const productId = document.getElementById("addToCartBtn").dataset.id;
+      addToCart(productId);
+    });
+  });
+</script>

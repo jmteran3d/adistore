@@ -1,0 +1,82 @@
+<div class="container mt-5">
+  <h1 class="mb-4">Tu Carrito</h1>
+
+  {{#if cart.products.length}}
+    <div class="table-responsive">
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr>
+            <th>Imagen</th>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Subtotal</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each cart.products}}
+            <tr>
+              <td>
+                <img src="{{this.product.thumbnail}}" alt="{{this.product.title}}" style="width: 60px; height: auto;">
+              </td>
+              <td>{{this.product.title}}</td>
+              <td>${{this.product.price}}</td>
+              <td>{{this.quantity}}</td>
+              <td>${{multiply this.product.price this.quantity}}</td>
+              <td>
+                <button 
+                  class="btn btn-danger btn-sm delete-product-btn" 
+                  data-pid="{{this.product._id}}">
+                  Eliminar
+                </button>
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Botón para vaciar carrito -->
+    <button class="btn btn-warning mt-3" id="clearCartBtn">
+      Vaciar carrito
+    </button>
+  {{else}}
+    <p>No hay productos en el carrito.</p>
+  {{/if}}
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const cartId = "{{cart._id}}";
+
+    // Eliminar producto específico
+    document.querySelectorAll(".delete-product-btn").forEach(button => {
+      button.addEventListener("click", async () => {
+        const pid = button.dataset.pid;
+        const res = await fetch(`/api/carts/${cartId}/products/${pid}`, {
+          method: "DELETE"
+        });
+
+        if (res.ok) {
+          location.reload();
+        } else {
+          alert("Error al eliminar el producto del carrito");
+        }
+      });
+    });
+
+    // Vaciar carrito
+    document.getElementById("clearCartBtn")?.addEventListener("click", async () => {
+      const res = await fetch(`/api/carts/${cartId}`, {
+        method: "DELETE"
+      });
+
+      if (res.ok) {
+        location.reload();
+      } else {
+        alert("Error al vaciar el carrito");
+      }
+    });
+  });
+</script>
