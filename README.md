@@ -40,7 +40,7 @@ npm install
 Crear archivo .env con:
 
 PORT=8080
-URI_MONGODB=mongodb+srv://coderjm:coderpass@ecommerce-cluster.pssjokm.mongodb.net/myEcommerce?retryWrites=true&w=majority&appName=ecommerce-cluster
+URI_MONGODB=<tu-cadena-de-conexion-mongodb-atlas>
 
 ### 3. Ejecutar en modo desarrollo
 
